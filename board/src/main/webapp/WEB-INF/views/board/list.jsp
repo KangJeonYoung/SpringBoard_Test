@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page session="false" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="utf-8">
@@ -130,7 +131,7 @@
       <div class="sidebar-wrapper">
         <ul class="nav">
           <li>
-            <a href="./dashboard.jsp">
+            <a href="/">
               <i class="nc-icon nc-bank"></i>
               <p> 메인 화면 </p>
             </a>
@@ -154,7 +155,7 @@
             </a>
           </li>
           <li class="active ">
-            <a href="./test_free_board.jsp">
+            <a href='/board/list'>
               <i class="nc-icon nc-single-copy-04"></i>
               <p> 자유 게시판 </p>
             </a>
@@ -232,15 +233,40 @@
                                     <c:forEach items="${list }" var="board">
                                     <tr>
                                    		<td><c:out value="${board.bno }"/></td>
-                                   		<td><c:out value="${board.title }"/></td>
+                                   		<td><a href='/board/get?bno=<c:out value="${board.bno }"/>'><c:out value="${board.title }"/></a></td>
                                    		<td><c:out value="${board.writer }"/></td>
-                                   		<td><fmt:formatDate pattern="yyyy-MM-dd"
-                                   		value="${board.regdate }"/></td>
+                                   		<td><fmt:formatDate pattern="YYYY-MM-dd" value="${board.regdate }"/></td>
                                    		<td><fmt:formatDate pattern="yyyy-MM-dd"
                                    		value="${board.updateDate }"/></td>
                                    	</tr>
                                    	</c:forEach>
 			</table>
+			
+			<!-- paging 추가 -->
+						<c:if test="${pageMaker.prev }">
+							<li class="paginate_button previous">
+							<a href="${pageMaker.startPage - 1 }">이전</a>
+							</li>
+						</c:if>
+						
+						<c:forEach var="num" begin="${pageMaker.startPage }"
+						 end = "${pageMaker.endPage }">
+							<li class="paginate_button" ${pageMaker.cri.pageNum == num ? "active":"" }">
+							<a href="list?bno=${num }">${num }</a>
+							</li>
+						</c:forEach>
+						
+						<c:if test="${pageMaker.next }">
+							<li class ='paginate_button next'>
+							<a href ="list?bno=${PageMaker.endPage + 1}">다음</a>
+							</li>
+						</c:if>
+				
+				<form id='actionForm' action="/board/list" method='get'>
+					<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum }'>
+					<input type='hidden' name='amount' value='${pageMaker.cri.amount }'>
+				</form>
+			<!-- paging 끝 -->
 			
 			<!-- Modal 추가 -->
           	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
@@ -248,14 +274,13 @@
           		<div class = "modal-dialog">
           			<div class="modal-content">
           				<div class="modal-header">
-          					<button type="button" class = "close" data-dismiss="modal" 
-          						aria-hidden="true">&times;</button>
-          					<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+<!--           					<button type="button" class = "close" data-dismiss="modal" 
+          						aria-hidden="true">&times;</button> -->
+          					<h4 class="modal-title" id="myModalLabel">완료 되었습니다.</h4>
           				</div>
           				<div class = "modal-body">처리가 완료되었습니다.</div>
           				<div class="modal-footer">
-          					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          					<button type="button" class="btn btn-primary">Save changes</button>
+          					<button type="button" class="btn btn-primary pull-right" data-dismiss="modal">Close</button>
           				</div>
           			</div>
           			<!-- /.modal-content -->
@@ -265,13 +290,13 @@
           	<!-- /.modal -->
 			
 			
-				<a href ='#' class ='btn btn-success btn-arrow-left'>이전</a>
+<!-- 				<a href ='#' class ='btn btn-success btn-arrow-left'>이전</a>
 				
 				<div id="pagination">
 					<a href ='#' class ='btn btn-success btn-arrow-left'>다음</a>
-				</div>
+				</div>-->
 				
-					<button type="button" id="regBtn" class="btn btn-primary pull-right" >글쓰기</button>
+					<button " type="button" id="regBtn" class="btn btn-primary pull-right" >글쓰기</button>
 
 			</form>
 				
@@ -344,6 +369,14 @@
         		    $("#regBtn").on("click", function(){
         		    	self.location = "/board/register";
         		    });
+
+					var actionForm = $("#actionForm");
+
+					$(".paginate_button a").on("click",function(e){
+						e.preventDefault();
+						console.log('click');
+						actionForm.find("input[name='pageNum']").val($this).atter("href"));
+					});					
             	});
             </script>
   

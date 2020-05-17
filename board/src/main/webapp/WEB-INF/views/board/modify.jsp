@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <%@ page session="false" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="utf-8">
@@ -144,6 +146,7 @@
 				</div>
 			</div> --%>
 			
+			<form role="form" action="/board/modify" method="post">
 			      <div class="row">
                     <div class="col-md-6 pr-1">
                       <div class="form-group">
@@ -165,105 +168,43 @@
                     <div class="col-md-12">
                       <div class="form-group">
                         <label> 제목 </label>
-                        <input class="form-control" name='title'
-					value = '<c:out value="${board.title }" />' readonly = "readonly">
+                         <input class="form-control" name='title'
+						value = '<c:out value="${board.title }"/>'>
                       </div>
                     </div>
                   </div>
 				
 				<div class="form-grop">
 					<label>Text area</label>
-					<textarea rows="3" class="form-control" name='content' readonly="readonly">
-					<c:out value="${board.content }"></c:out>
+					<textarea class="form-control" rows="3" name='content'>
+						<c:out value="${board.content }" />	
 					</textarea>
 				</div>
 				
-				<button type="modify" class="btn btn-primary pull-right" onclick="location.href='/board/modify?bno=<c:out value="${board.bno }"/>'">글 수정</button>
-				<button type="list" class="btn btn-primary pull-right" onclick="location.href='/board/list'">리스트</button>
+				
+			      <div class="row">
+                    <div class="col-md-6 pr-1">
+						<div class="form-group">
+							<label>게시물 생성 일</label> <input class="form-control" name='regDate'
+							value = '<fmt:formatDate pattern = "yyyy/MM/dd" 
+							value="${board.regdate}"/>' readonly = "readonly">
+						</div>
+					</div>
+                    <div class="col-md-6 pr-1">
+						<div class="form-group">
+							<label>게시물 수정 일</label> <input class="form-control" name='updateDate'
+							value = '<fmt:formatDate pattern = "yyyy/MM/dd" 
+							value="${board.updateDate}"/>' readonly = "readonly">
+						</div>	
+					</div>
+				  </div>
+					<button type="submit" date-oper='modify' class ="btn btn-default">수정</button>
+					<button type="submit" date-oper='remove' class ="btn btn-default">리셋</button>
+					<button type="submit" date-oper='list' class ="btn btn-default">리스트</button>
+				</form>
+			
 			</div>
 			<!-- end panel-body -->
-
-<%-- 				<!-- Form start -->
-				                <form>
-                  <div class="row">
-                    <div class="col-md-5 pr-1">
-                      <div class="form-group">
-                        <label>Company (disabled)</label>
-                        <input type="text" class="form-control" disabled="" placeholder="Company" value="Creative Code Inc.">
-                      </div>
-                    </div>
-                    <div class="col-md-3 px-1">
-                      <div class="form-group">
-                        <label> 닉네임 </label>
-                        <input type="text" class="form-control" placeholder="Username" value="michael23">
-                      </div>
-                    </div>
-                    <div class="col-md-4 pl-1">
-                      <div class="form-group">
-                        <label for="exampleInputEmail1"> 이메일 주소 </label>
-                        <input type="email" class="form-control" placeholder="Email">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-6 pr-1">
-                      <div class="form-group">
-                        <label> 번호 </label>
-                        <input class="form-control" name='bno'
-					value = '<c:out value="${board.bno }" />' readonly = "readonly">
-                      </div>
-                    </div>
-                    <div class="col-md-6 pl-1">
-                      <div class="form-group">
-                        <label> 작성자 </label>
-                        <input class="form-control" name='writer'
-					value = '<c:out value="${board.writer }" />' readonly = "readonly">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label> 주소 </label>
-                        <input type="text" class="form-control" placeholder="Home Address" value="Melbourne, Australia">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-4 pr-1">
-                      <div class="form-group">
-                        <label> 지역 </label>
-                        <input type="text" class="form-control" placeholder="City" value="Melbourne">
-                      </div>
-                    </div>
-                    <div class="col-md-4 px-1">
-                      <div class="form-group">
-                        <label> 국가 </label>
-                        <input type="text" class="form-control" placeholder="Country" value="Australia">
-                      </div>
-                    </div>
-                    <div class="col-md-4 pl-1">
-                      <div class="form-group">
-                        <label> 지역 코드 </label>
-                        <input type="number" class="form-control" placeholder="ZIP Code">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label> 자기소개 </label>
-                        <textarea class="form-control textarea">Oh so, your weak rhyme You doubt I'll bother, reading into it</textarea>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="update ml-auto mr-auto">
-                      <button type="submit" class="btn btn-primary btn-round">Update Profile</button>
-                    </div>
-                  </div>
-                </form>
-				<!-- END form --> --%>
 				
 
 
@@ -298,6 +239,30 @@
     </div>
   </div>
   <!--   Core JS Files   -->
+  
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var formObj = $("form");
+			
+			$('button').on("click", function(e){
+				e.prevenDefault();
+			
+				var operation = $(this).data("oper");
+				console.log("operation : " + operation);
+				debugger;
+				
+				if(operation === 'remove'){
+					formObj.attr("action", "/board/remove");
+				}else if(operation === 'list'){
+					//move to list
+					formObj.attr("action", "/board/list").attr("method", "get");
+					formObj.empty();
+				}
+				formObj.submit();
+			});
+		});
+	</script>
+  
   <script src="<%=request.getContextPath()%>/resources/assets/js/core/jquery.min.js"></script>
   <script src="<%=request.getContextPath()%>/resources/assets/js/core/popper.min.js"></script>
   <script src="<%=request.getContextPath()%>/resources/assets/js/core/bootstrap.min.js"></script>

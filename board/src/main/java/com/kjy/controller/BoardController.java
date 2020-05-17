@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kjy.domain.BoardVO;
+import com.kjy.domain.Criteria;
+import com.kjy.domain.PageDTO;
 import com.kjy.service.BoardService;
 
 import lombok.AllArgsConstructor;
@@ -22,13 +24,21 @@ public class BoardController {
 
 	private BoardService service;
 	
+//	@GetMapping("/list")
+//	public void list(Model model) {
+//	
+//		log.info("list");
+//		model.addAttribute("list",service.getList());
+//	}
+	
 	@GetMapping("/list")
-	public void list(Model model) {
+	public void list(Criteria cri,Model model) {
 	
-		log.info("list");
-		model.addAttribute("list",service.getList());
+		log.info("list:" + cri);
+		model.addAttribute("list",service.getList(cri));
+		model.addAttribute("pageMaker", new PageDTO(cri, 3000));
 	}
-	
+//	
 	@PostMapping("/register")
 	public String register(BoardVO board, RedirectAttributes rttr) {
 		
@@ -41,10 +51,10 @@ public class BoardController {
 		return "redirect:/board/list";
 	}
 	
-	@GetMapping("/get")
+	@GetMapping({"/get", "/modify"})
 	public void get(@RequestParam("bno") Long bno, Model model) {
 		
-		log.info("/get");
+		log.info("/get or modify");
 		model.addAttribute("board", service.get(bno));
 	}
 	
@@ -72,6 +82,6 @@ public class BoardController {
 	public void register() {
 		
 	}
-	
+
 	
 }

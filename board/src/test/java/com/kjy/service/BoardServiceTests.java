@@ -9,6 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.kjy.domain.BoardVO;
+import com.kjy.domain.Criteria;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -21,14 +22,14 @@ public class BoardServiceTests {
 	@Setter(onMethod_ = {@Autowired })
 	private BoardService service;
 	
-	@Test
+	//@Test
 	public void testExist() {
 		
 		log.info(service);
 		assertNotNull(service);
 	}
 	
-	@Test
+	//@Test
 	public void testRegister() {
 		
 		BoardVO board = new BoardVO();
@@ -41,18 +42,18 @@ public class BoardServiceTests {
 		log.info("생성된 게시물의 번호 : " + board.getBno());
 	}
 	
-	@Test
+	//@Test
 	public void testGet() {
 		log.info(service.get(1L));
 	}
 	
-	@Test
+	//@Test
 	public void testDelete() {
 		// 게시물 번호의 존재 여부를 확인하고 테스트 할것.
 		log.info("REMOVE RESULT:" + service.remove(7L));
 	}
 	
-	@Test
+	//@Test
 	public void testUpdate() {
 		BoardVO board = service.get(1L);
 		
@@ -63,4 +64,11 @@ public class BoardServiceTests {
 		board.setTitle("제목을 수정 테스트 합니다.");
 		log.info("MODIFY RESULT:"+ service.modify(board));
 	}
+	
+	@Test
+	public void testGetList() {
+		service.getList(new Criteria(2,10)).forEach(board -> log.info(board));
+	}
+
+
 }

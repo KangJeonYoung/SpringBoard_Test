@@ -1,5 +1,7 @@
 package com.kjy.mapper;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.kjy.domain.BoardVO;
+import com.kjy.domain.Criteria;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -19,12 +22,13 @@ public class BoardMapperTests {
 	@Setter(onMethod_ = @Autowired)
 	BoardMapper mapper;
 	
-	@Test
+	//@Test
 	public void testGetList() {
 		mapper.getList().forEach(board -> log.info(board));
 	}
 	
-	@Test
+	
+	//@Test
 	public void testInsert() {
 		BoardVO board = new BoardVO();
 		board.setTitle("�깉濡� �옉�꽦�븯�뒗 湲�");
@@ -36,7 +40,7 @@ public class BoardMapperTests {
 		log.info(board);
 	}
 	
-	 @Test
+	 //@Test
 	 public void testInsertSelectKey() {
 		 BoardVO board = new BoardVO();
 		 board.setTitle("�깉濡� �옉�꽦�븯�뒗 湲� select key");
@@ -48,7 +52,7 @@ public class BoardMapperTests {
 		 log.info(board);
 	 }
 	
-	@Test
+	//@Test
 	public void testRead() {
 		
 		//議댁옱�븯�뒗 寃뚯떆臾� 踰덊샇濡� �뀒�뒪�듃
@@ -57,12 +61,12 @@ public class BoardMapperTests {
 		log.info(board);
 	}
 	
-	@Test
+	//@Test
 	public void testDelete() {
 		log.info("DELETE COUNT:"+mapper.delete(3L));
 	}
 	
-	 @Test
+	// @Test
 	 public void testUpdate() {
 		 BoardVO board = new BoardVO();
 		 board.setBno(3L);	// 議댁옱�븯�뒗 踰덊샇�씤吏� 癒쇱� �솗�씤
@@ -73,4 +77,27 @@ public class BoardMapperTests {
 		 int count = mapper.update(board);
 		 log.info("UPDATE COUNT: " + count);
 	 }
+	 
+		@Test
+		public void testPaging() {
+			Criteria cri = new Criteria();
+
+
+			List<BoardVO> list = mapper.getListWithPaging(cri);
+			
+			list.forEach(board -> log.info(board));
+		}
+		
+		/*
+		 * public int delete(Long bno); public int update(BoardVO board);
+		 */
+		/*
+		 * @Test public void testSearch() {
+		 * 
+		 * Criteria cri = new Criteria(); cri.setKeyword("새로"); cri.setType("TC");
+		 * 
+		 * List<BoardVO> list = mapper.getListWithPaging(cri);
+		 * 
+		 * list.forEach(board -> log.info(board)); }
+		 */
 }
